@@ -36,5 +36,10 @@ void Player_Update(Player* const player)
 
     // Sprites_SetPos(player->sprite, player->posX, player->posY);
 
+    //player->sprite->attr2 = (player->sprite->attr2 + 8) % 32;
+}
+
+void Player_Render(Player* const player)
+{
     player->sprite->attr2 = (player->sprite->attr2 + 8) % 32;
 }

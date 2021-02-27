@@ -4,32 +4,31 @@
 
 #include <gba_video.h>
 #include "Player.h"
+#include "../data/WorldData.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /**
- * Represents a tile map background.
+ * Represents tile maps and its layers.
  */
 typedef struct _World {
-    const u16* tileMap;
-    const u16* tileSet;
-    u32 mapLen, tileSetLen;
     u16 posX, posY;
     u32 width, height;
 } World;
 
 void World_Init(
     World* const world,
-    const u16* const tileMap,
+    const WorldData* const worldData,
     const u16* const tileSet,
     const u16* const palette,
-    const u32 mapLen,
     const u32 tileSetLen,
     const u32 paletteLen);
 
 void World_Update(World* const world, Player* const player);
+
+void World_Render(const World* const world);
 
 /**
  * Sets the size of the map for the background.

@@ -6,25 +6,27 @@
 
 void World_Init(
     World* const world,
-    const u16* const tileMap,
+    const WorldData* const worldData,
     const u16* const tileSet,
     const u16* const palette,
-    const u32 mapLen,
     const u32 tileSetLen,
     const u32 paletteLen)
 {
     dmaCopy(palette, BG_PALETTE, paletteLen);
-    dmaCopy(tileMap, MAP_BASE_ADR(4), mapLen << 1);
     dmaCopy(tileSet, TILE_BASE_ADR(0), tileSetLen << 1);
 
-    REG_BG0CNT = TILE_BASE(0) | MAP_BASE(4) | BG_PRIORITY(0) | BG_256_COLOR | TEXTBG_SIZE_256x256;
+    for (int i = 0; i < worldData->numLayers; ++i)
+    {
+        const TileLayerData* const tileLayerData = worldData->tileLayerData + i;
+        dmaCopy(tileLayerData->tileMapData, MAP_BASE_ADR(tileLayerData->mapIndex), tileLayerData->tileMapDataLen);
+        (*(BGCTRL + i)) = TILE_BASE(tileLayerData->tileIndex) | MAP_BASE(tileLayerData->mapIndex) |
+            BG_PRIORITY(tileLayerData->priority) | BG_256_COLOR | tileLayerData->mapSize;
+    }
 
-    world->mapLen = mapLen;
-    world->tileSetLen = tileSetLen;
     world->posX = 0;
     world->posY = 0;
-    world->width = 256;
-    world->height = 256;
+    world->width = worldData->width;
+    world->height = worldData->height;
 }
 
 void World_Update(World* const world, Player* const player)
@@ -52,7 +54,10 @@ void World_Update(World* const world, Player* const player)
         if (world->posY + SCREEN_HEIGHT < world->height)
             ++world->posY;
     }
+}
 
+void World_Render(const World* const world)
+{
     REG_BG0HOFS = world->posX;
     REG_BG0VOFS = world->posY;
 }

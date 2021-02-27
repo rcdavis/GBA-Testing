@@ -6,8 +6,8 @@
 #include "Player.h"
 #include "World.h"
 
-#include "../data/SMB_Test_World.h"
 #include "../data/BlockTiles.h"
+#include "../data/WorldData.h"
 
 Player* const player = (Player*)EWRAM;
 World* const world = (World*)(player + 1);
@@ -31,6 +31,8 @@ int main()
 
         VBlankIntrWait();
 
+        World_Render(world);
+        Player_Render(player);
         Sprites_Render();
     }
 }
@@ -52,9 +54,6 @@ void Init()
     Player_Init(player);
     Player_SetVFlipped(player, true);
 
-    World_Init(world, SMB_Test_World_Map, BlockTilesTiles, BlockTilesPal,
-        SMB_TEST_WORLD_LENGTH, BlockTilesTilesLen, BlockTilesPalLen);
-
-    dmaCopy(Tile_Layer_2, MAP_BASE_ADR(8), SMB_TEST_WORLD_LENGTH << 1);
-    REG_BG1CNT = TILE_BASE(0) | MAP_BASE(8) | BG_PRIORITY(1) | BG_256_COLOR | TEXTBG_SIZE_256x256;
+    World_Init(world, &WORLD_1_DATA, BlockTilesTiles, BlockTilesPal,
+        BlockTilesTilesLen, BlockTilesPalLen);
 }
