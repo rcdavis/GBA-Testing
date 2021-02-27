@@ -1,2 +1,2 @@
 # GBA-Testing
-Place to test GBA development
+Place to test GBA development.
