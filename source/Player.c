@@ -69,7 +69,7 @@ u16 Player_GetNumFrames(const Player* const player)
 {
     if (player->state == PLAYER_RUNNING)
     {
-        return 5;
+        return 4;
     }
 
     return 4;
