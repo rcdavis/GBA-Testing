@@ -8,12 +8,18 @@
 extern "C" {
 #endif
 
+typedef enum _PlayerState {
+    PLAYER_IDLE,
+    PLAYER_RUNNING
+} PlayerState;
+
 typedef struct _Player {
     OBJATTR* sprite;
     u16 curFrame, numFrames;
     u16 curTick, ticksPerFrame;
     u16 posX, posY;
     u16 width, height;
+    PlayerState state;
 } Player;
 
 void Player_Init(Player* const player);
@@ -39,6 +45,12 @@ inline void Player_SetHFlipped(Player* const player, bool flipped)
 {
     Sprites_SetHFlipped(player->sprite, flipped);
 }
+
+u16 Player_GetNumFrames(const Player* const player);
+
+u16 Player_GetCurrentFrame(const Player* const player);
+
+void Player_ChangeState(Player* const player, const PlayerState state);
 
 #ifdef __cplusplus
 }

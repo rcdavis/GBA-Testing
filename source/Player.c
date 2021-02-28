@@ -19,6 +19,7 @@ void Player_Init(Player* const player)
     player->posY = 0;
     player->width = 16;
     player->height = 16;
+    player->state = PLAYER_IDLE;
 
     Sprites_SetPaletteSize(player->sprite, OBJ_256_COLOR);
     Sprites_SetSize(player->sprite, Sprite_16x16);
@@ -32,11 +33,17 @@ void Player_Update(Player* const player)
     {
         //++player->posX;
         Sprites_SetHFlipped(player->sprite, false);
+        Player_ChangeState(player, PLAYER_RUNNING);
     }
     else if (keysH & KEY_LEFT)
     {
         //--player->posX;
         Sprites_SetHFlipped(player->sprite, true);
+        Player_ChangeState(player, PLAYER_RUNNING);
+    }
+    else
+    {
+        Player_ChangeState(player, PLAYER_IDLE);
     }
 
     // if (keysH & KEY_UP)
@@ -51,9 +58,39 @@ void Player_Update(Player* const player)
     {
         player->curTick = 0;
         ++player->curFrame;
-        if (player->curFrame >= player->numFrames)
+        if (player->curFrame >= Player_GetNumFrames(player))
             player->curFrame = 0;
     }
 
-    Sprites_SetTileIndex(player->sprite, player->curFrame * 8);
+    Sprites_SetTileIndex(player->sprite, Player_GetCurrentFrame(player));
+}
+
+u16 Player_GetNumFrames(const Player* const player)
+{
+    if (player->state == PLAYER_RUNNING)
+    {
+        return 5;
+    }
+
+    return 4;
+}
+
+u16 Player_GetCurrentFrame(const Player* const player)
+{
+    if (player->state == PLAYER_RUNNING)
+    {
+        return (player->curFrame + 4) * 8;
+    }
+
+    return player->curFrame * 8;
+}
+
+void Player_ChangeState(Player* const player, const PlayerState state)
+{
+    if (player->state != state)
+    {
+        player->curFrame = 0;
+        player->curTick = 0;
+    }
+    player->state = state;
 }
