@@ -28,6 +28,8 @@ void Sprites_SetPaletteSize(OBJATTR* const objAttr, const u16 size);
 
 void Sprites_SetSize(OBJATTR* const objAttr, const enum SPRITE_SIZECODE size);
 
+void Sprites_SetTileIndex(OBJATTR* const objAttr, const u16 index);
+
 inline bool Sprites_IsVFlipped(const OBJATTR* const objAttr)
 {
     return (objAttr->attr1 & OBJ_VFLIP) != 0;

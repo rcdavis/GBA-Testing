@@ -18,8 +18,8 @@ void Sprites_Init()
 
 void Sprites_SetPos(OBJATTR* const objAttr, const u16 posX, const u16 posY)
 {
-    objAttr->attr0 &= ~((0xFF));
-    objAttr->attr1 &= ~((0x1FF));
+    objAttr->attr0 &= ~(0x00FF);
+    objAttr->attr1 &= ~(0x01FF);
 
     objAttr->attr0 |= OBJ_Y(posY);
     objAttr->attr1 |= OBJ_X(posX);
@@ -41,6 +41,12 @@ void Sprites_SetSize(OBJATTR* const objAttr, const enum SPRITE_SIZECODE size)
 {
     objAttr->attr1 &= ~OBJ_SIZE(0xF);
     objAttr->attr1 |= OBJ_SIZE(size);
+}
+
+void Sprites_SetTileIndex(OBJATTR* const objAttr, const u16 index)
+{
+    objAttr->attr2 &= ~0x03FF;
+    objAttr->attr2 |= OBJ_CHAR(index);
 }
 
 void Sprites_Render()

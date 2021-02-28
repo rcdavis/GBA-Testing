@@ -10,6 +10,8 @@ extern "C" {
 
 typedef struct _Player {
     OBJATTR* sprite;
+    u16 curFrame, numFrames;
+    u16 curTick, ticksPerFrame;
     u16 posX, posY;
     u16 width, height;
 } Player;
@@ -17,8 +19,6 @@ typedef struct _Player {
 void Player_Init(Player* const player);
 
 void Player_Update(Player* const player);
-
-void Player_Render(Player* const player);
 
 inline bool Player_IsVFlipped(const Player* const player)
 {

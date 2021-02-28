@@ -29,5 +29,10 @@ const WorldData WORLD_1_DATA = {
     },
     2,
     256,
-    256
+    256,
+    BlockTilesTiles,
+    BlockTilesPal,
+    BlockTilesTilesLen,
+    BlockTilesPalLen,
+    0
 };

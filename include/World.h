@@ -18,13 +18,7 @@ typedef struct _World {
     u32 width, height;
 } World;
 
-void World_Init(
-    World* const world,
-    const WorldData* const worldData,
-    const u16* const tileSet,
-    const u16* const palette,
-    const u32 tileSetLen,
-    const u32 paletteLen);
+void World_Init(World* const world, const WorldData* const worldData);
 
 void World_Update(World* const world, Player* const player);
 

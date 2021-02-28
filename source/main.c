@@ -6,7 +6,6 @@
 #include "Player.h"
 #include "World.h"
 
-#include "../data/BlockTiles.h"
 #include "../data/WorldData.h"
 
 Player* const player = (Player*)EWRAM;
@@ -32,7 +31,6 @@ int main()
         VBlankIntrWait();
 
         World_Render(world);
-        Player_Render(player);
         Sprites_Render();
     }
 }
@@ -52,8 +50,8 @@ void Init()
     Sprites_Init();
 
     Player_Init(player);
-    Player_SetVFlipped(player, true);
 
-    World_Init(world, &WORLD_1_DATA, BlockTilesTiles, BlockTilesPal,
-        BlockTilesTilesLen, BlockTilesPalLen);
+    Sprites_SetPos(player->sprite, 40, 40);
+
+    World_Init(world, &WORLD_1_DATA);
 }

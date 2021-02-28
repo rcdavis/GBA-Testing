@@ -4,16 +4,10 @@
 #include <gba_dma.h>
 #include <gba_input.h>
 
-void World_Init(
-    World* const world,
-    const WorldData* const worldData,
-    const u16* const tileSet,
-    const u16* const palette,
-    const u32 tileSetLen,
-    const u32 paletteLen)
+void World_Init(World* const world, const WorldData* const worldData)
 {
-    dmaCopy(palette, BG_PALETTE, paletteLen);
-    dmaCopy(tileSet, TILE_BASE_ADR(0), tileSetLen << 1);
+    dmaCopy(worldData->tilePaletteData, BG_PALETTE, worldData->tilePaletteDataLen);
+    dmaCopy(worldData->tileSetData, TILE_BASE_ADR(worldData->tileSetIndex), worldData->tileSetDataLen << 1);
 
     for (int i = 0; i < worldData->numLayers; ++i)
     {

@@ -11,6 +11,10 @@ void Player_Init(Player* const player)
     dmaCopy(charspritesTiles, SPRITE_GFX, charspritesTilesLen);
 
     player->sprite = spriteAttrs;
+    player->curFrame = 0;
+    player->numFrames = 4;
+    player->curTick = 0;
+    player->ticksPerFrame = 5;
     player->posX = 0;
     player->posY = 0;
     player->width = 16;
@@ -22,12 +26,18 @@ void Player_Init(Player* const player)
 
 void Player_Update(Player* const player)
 {
-    // const u16 keysH = keysHeld();
+    const u16 keysH = keysHeld();
 
-    // if (keysH & KEY_RIGHT)
-    //     ++player->posX;
-    // else if (keysH & KEY_LEFT)
-    //     --player->posX;
+    if (keysH & KEY_RIGHT)
+    {
+        //++player->posX;
+        Sprites_SetHFlipped(player->sprite, false);
+    }
+    else if (keysH & KEY_LEFT)
+    {
+        //--player->posX;
+        Sprites_SetHFlipped(player->sprite, true);
+    }
 
     // if (keysH & KEY_UP)
     //     --player->posY;
@@ -36,10 +46,14 @@ void Player_Update(Player* const player)
 
     // Sprites_SetPos(player->sprite, player->posX, player->posY);
 
-    //player->sprite->attr2 = (player->sprite->attr2 + 8) % 32;
-}
+    ++player->curTick;
+    if (player->curTick >= player->ticksPerFrame)
+    {
+        player->curTick = 0;
+        ++player->curFrame;
+        if (player->curFrame >= player->numFrames)
+            player->curFrame = 0;
+    }
 
-void Player_Render(Player* const player)
-{
-    player->sprite->attr2 = (player->sprite->attr2 + 8) % 32;
+    Sprites_SetTileIndex(player->sprite, player->curFrame * 8);
 }
